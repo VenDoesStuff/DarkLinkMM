@@ -114,19 +114,59 @@ static DamageTable sDamageTable = {
     /* Unknown 2     */ DMG_ENTRY(0, 0x0),
 };
 
+extern PlayerAgeProperties sPlayerAgeProperties[PLAYER_FORM_MAX];
+
+static EffectBlureInit2 sBlureInit = {
+    0,
+    EFFECT_BLURE_ELEMENT_FLAG_8,
+    0,
+    { 255, 255, 255, 255 },
+    { 255, 255, 255, 64 },
+    { 255, 255, 255, 0 },
+    { 255, 255, 255, 0 },
+    4,
+    0,
+    EFF_BLURE_DRAW_MODE_SMOOTH,
+    0,
+    { 0, 0, 0, 0 },
+    { 0, 0, 0, 0 },
+};
+
+static EffectTireMarkInit sTireMarkInit = {
+    0,
+    63,
+    { 0, 0, 15, 100 },
+};
+
 void EnTorch2_Init(Actor* thisx, PlayState* play2) {
+    recomp_printf("start init\n");
+    recomp_printf("start init\n");
+    
     PlayState* play = play2;
     Player* this = (Player*)thisx;
 
+    recomp_printf("start input\n");
     sInput.cur.button = sInput.press.button = sInput.rel.button = 0;
     sInput.cur.stick_x = sInput.cur.stick_y = 0;
+    recomp_printf("input done\n");
     // this->currentShield = PLAYER_SHIELD_HYLIAN;
     // this->heldItemAction = this->heldItemId = PLAYER_IA_SWORD_MASTER;
     // Player_SetModelGroup(this, PLAYER_MODELGROUP_SWORD_AND_SHIELD);
+    recomp_printf("model stuff\n");
     this->currentShield = PLAYER_SHIELD_HEROS_SHIELD;
     this->heldItemAction = this->heldItemId = PLAYER_IA_SWORD_GILDED;
+
+    this->actor.room = -1;
+    this->csId = CS_ID_NONE;
+    this->transformation = PLAYER_FORM_HUMAN;
+    this->ageProperties = &sPlayerAgeProperties[PLAYER_FORM_ZORA];;
+    this->heldItemAction = PLAYER_IA_NONE;
+    this->heldItemId = ITEM_OCARINA_OF_TIME;
+
     Player_SetModelGroup(this, PLAYER_MODELGROUP_ONE_HAND_SWORD);
+    recomp_printf("model done, player init\n");
     play->playerInit(this, play, &gDarkLinkSkel);
+    recomp_printf("player init done\n");
     // this->actor.naviEnemyId = NAVI_ENEMY_DARK_LINK;
     this->cylinder.base.acFlags = AC_ON | AC_TYPE_PLAYER;
     this->meleeWeaponQuads[0].base.atFlags = this->meleeWeaponQuads[1].base.atFlags = AT_ON | AT_TYPE_ENEMY;
@@ -140,7 +180,16 @@ void EnTorch2_Init(Actor* thisx, PlayState* play2) {
     this->actor.colChkInfo.health = gSaveContext.save.saveInfo.playerData.healthCapacity >> 3;
     this->actor.colChkInfo.cylRadius = 60;
     this->actor.colChkInfo.cylHeight = 100;
+
+    recomp_printf("collider done\n");
+
+    Effect_Add(play, &this->meleeWeaponEffectIndex[0], EFFECT_BLURE2, 0, 0, &sBlureInit);
+    Effect_Add(play, &this->meleeWeaponEffectIndex[1], EFFECT_BLURE2, 0, 0, &sBlureInit);
+    Effect_Add(play, &this->meleeWeaponEffectIndex[2], EFFECT_TIRE_MARK, 0, 0, &sTireMarkInit);
+
+
     play->func_18780(this, play);
+    recomp_printf("play func done\n");
 
     sActionState = ENTORCH2_WAIT;
     sDodgeRollState = 0;
@@ -152,6 +201,7 @@ void EnTorch2_Init(Actor* thisx, PlayState* play2) {
     sLastSwordAnim = 0;
     sAlpha = 95;
     sSpawnPoint = this->actor.home.pos;
+    recomp_printf("init done\n");
 }
 
 void EnTorch2_Destroy(Actor* thisx, PlayState* play) {
