@@ -161,7 +161,8 @@ void EnTorch2_Init(Actor* thisx, PlayState* play2) {
     // this->heldItemAction = this->heldItemId = PLAYER_IA_SWORD_MASTER;
     // Player_SetModelGroup(this, PLAYER_MODELGROUP_SWORD_AND_SHIELD);
     this->currentShield = PLAYER_SHIELD_HEROS_SHIELD;
-    this->heldItemAction = this->heldItemId = PLAYER_IA_SWORD_GILDED;
+    this->heldItemAction = PLAYER_IA_SWORD_GILDED;
+    this->heldItemId = ITEM_SWORD_GILDED;
 
     this->actor.room = -1;
     this->csId = CS_ID_NONE;
@@ -186,9 +187,6 @@ void EnTorch2_Init(Actor* thisx, PlayState* play2) {
     darkLinkProperties.surfaceSfxIdOffset = 0x80;
 
     this->ageProperties = &darkLinkProperties;
-
-    this->heldItemAction = PLAYER_IA_NONE;
-    this->heldItemId = ITEM_OCARINA_OF_TIME;
 
     Player_SetModelGroup(this, PLAYER_MODELGROUP_ONE_HAND_SWORD);
     play->playerInit(this, play, &gDarkLinkSkel);
