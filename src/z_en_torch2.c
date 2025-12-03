@@ -127,7 +127,7 @@ void EnTorch2_Init(Actor* thisx, PlayState* play2) {
     this->actor.colChkInfo.health = gSaveContext.save.saveInfo.playerData.healthCapacity >> 3;
     this->actor.colChkInfo.cylRadius = 60;
     this->actor.colChkInfo.cylHeight = 100;
-    play->func_11D54(this, play);
+    play->func_18780(this, play);
 
     sActionState = ENTORCH2_WAIT;
     sDodgeRollState = 0;
@@ -529,7 +529,7 @@ void EnTorch2_Update(Actor* thisx, PlayState* play2) {
 #if OOT_VERSION >= NTSC_1_2
                 Math_Vec3f_Copy(&this->actor.home.pos, &this->actor.world.pos);
 #endif
-                play->func_11D54(this, play);
+                play->func_18780(this, play);
                 sActionState = ENTORCH2_ATTACK;
                 sStickTilt = 0.0f;
                 if (sAlpha != 255) {
@@ -766,15 +766,22 @@ s32 EnTorch2_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f
 void EnTorch2_PostLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot, void* thisx, Gfx** gfx) {
     Player* this = (Player*)thisx;
 
-    Player_PostLimbDrawGameplay(play, limbIndex, dList, rot, &this->actor);
+    Player_PostLimbDrawGameplay(play, limbIndex, dList, NULL, rot, &this->actor);
 }
+
+Gfx D_80116280[] = {
+    gsDPSetRenderMode(G_RM_FOG_SHADE_A, AA_EN | Z_CMP | Z_UPD | IM_RD | CLR_ON_CVG | CVG_DST_WRAP | ZMODE_XLU |
+                                            FORCE_BL | GBL_c2(G_BL_CLR_IN, G_BL_A_IN, G_BL_CLR_MEM, G_BL_1MA)),
+    gsDPSetAlphaCompare(G_AC_THRESHOLD),
+    gsSPEndDisplayList(),
+};
 
 void EnTorch2_Draw(Actor* thisx, PlayState* play2) {
     PlayState* play = play2;
     Player* this = (Player*)thisx;
     s32 pad;
 
-    OPEN_DISPS(play->state.gfxCtx, "../z_en_torch2.c", 1050);
+    OPEN_DISPS(play->state.gfxCtx);
     func_80093C80(play);
     Gfx_SetupDL_25Xlu(play->state.gfxCtx);
     if (sAlpha == 255) {
@@ -794,5 +801,5 @@ void EnTorch2_Draw(Actor* thisx, PlayState* play2) {
             SkelAnime_DrawFlex(play, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount,
                                EnTorch2_OverrideLimbDraw, EnTorch2_PostLimbDraw, this, POLY_XLU_DISP);
     }
-    CLOSE_DISPS(play->state.gfxCtx, "../z_en_torch2.c", 1114);
+    CLOSE_DISPS(play->state.gfxCtx);
 }
