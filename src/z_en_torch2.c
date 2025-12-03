@@ -53,8 +53,19 @@ void OoTArwing_OnRecompInit() {
 // Spawn Arwing in South Clock Town
 RECOMP_HOOK("Actor_SpawnTransitionActors")
 void OoTArwing_OnRoomLoad(PlayState* play, ActorContext* actorCtx) {
-    if (play->sceneId == SCENE_CLOCKTOWER) {
-        Actor_SpawnAsChildAndCutscene(&play->actorCtx, play, CUSTOM_ACTOR_EN_DARKLINK, -367.0f, 50.0f, -245.0f, 0, 0, 0, 0xFFFF, 0, 0, 0);
+    if (play->sceneId == SCENE_00KEIKOKU) {
+        Actor_SpawnAsChildAndCutscene(&play->actorCtx, play, CUSTOM_ACTOR_EN_DARKLINK, -367.0f, 0.0f, -245.0f, 0, 0, 0, 0xFFFF, 0, 0, 0);
+    }
+}
+
+RECOMP_HOOK("Player_Update")
+void SpawnArwingWithL(Actor* thisx, PlayState* play) {
+    Input* input = CONTROLLER1(&play->state);
+    if (CHECK_BTN_ALL(input->press.button, BTN_L)) {
+        Actor_SpawnAsChildAndCutscene(&play->actorCtx, play, CUSTOM_ACTOR_EN_DARKLINK, \
+            thisx->world.pos.x, thisx->world.pos.y + Player_GetHeight((Player*)thisx) + 5.0f, thisx->world.pos.z,\
+            thisx->world.rot.x, thisx->world.rot.y, thisx->world.rot.z, \
+            0xFFFF, 0, 0, 0);
     }
 }
 
@@ -217,8 +228,9 @@ void EnTorch2_Destroy(Actor* thisx, PlayState* play) {
     s32 pad;
     Player* this = (Player*)thisx;
 
-    // Effect_Delete(play, this->meleeWeaponEffectIndex);
     Effect_Destroy(play, this->meleeWeaponEffectIndex[0]);
+    Effect_Destroy(play, this->meleeWeaponEffectIndex[1]);
+    Effect_Destroy(play, this->meleeWeaponEffectIndex[2]);
     Audio_RestorePrevBgm();
     Collider_DestroyCylinder(play, &this->cylinder);
     Collider_DestroyQuad(play, &this->meleeWeaponQuads[0]);
