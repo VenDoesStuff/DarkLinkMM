@@ -1,3 +1,5 @@
+#include "global.h"
+
 #include "object_torch2.h"
 
 #include "array_count.h"

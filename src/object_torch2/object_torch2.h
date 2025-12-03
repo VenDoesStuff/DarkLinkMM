@@ -1,7 +1,7 @@
 #ifndef OBJECT_TORCH2_H
 #define OBJECT_TORCH2_H
 
-#include "animation.h"
+#include "global.h"
 #include "tex_len.h"
 #include "ultra64.h"
 
