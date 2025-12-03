@@ -5,27 +5,24 @@
 
 # Unique ID of this mod. Pick something long enough that it'll never be the same as any other mod.
 # The name displayed in the mod management menu is separate from this so this doesn't need to be human readable.
-id = "DarklinkMM"
+id = "mm_recomp_dark_link"
 
 # Version of this mod.
 version = "1.0.0"
 
 # The name that will show up for this mod in the mod menu. This should be human readable.
-display_name = "Always Spin Attack"
+display_name = "MM Dark Link"
 
 # The description that will show up when this mod is displayed in the mod menu. This should be human readable.
 description =  """
-This is an example mod for Majora's Mask: Recompiled that can be used as a template for creating mods. \
-When this mod is enabled, you will always perform a quickspin when swinging your sword.
-
-For more details, see https://github.com/Zelda64Recomp/MMRecompModTemplate."""
+funny dark sword man"""
 
 # A short description that will show up in this mod's entry in the mod list. This should be human readable and kept short
 # to prevent it from being cut off due to the limited space.
-short_description = "Always perform a quickspin when swinging your sword."
+short_description = "plink"
 
 # Authors of this mod.
-authors = [ "Your name here" ]
+authors = [ "VenDoesStuff", "Hyped (ThatHypedPerson)" ]
 
 # ID of the target recomp game.
 game_id = "mm"
@@ -37,6 +34,7 @@ minimum_recomp_version = "1.2.2"
 dependencies = [
 # Example dependency:
 #    "modname:1.0.0"
+	"ProxyMM_CustomActor"
 ]
 
 # Optional dependency mods. This has the same format as `dependencies`, but the game will still start if dependencies in this
@@ -59,7 +57,7 @@ native_libraries = [
 elf_path = "build/mod.elf"
 
 # Output mod filename.
-mod_filename = "mm_recomp_mod_template"
+mod_filename = "mm_recomp_dark_link"
 
 # Reference symbol files.
 func_reference_syms_file = "Zelda64RecompSyms/mm.us.rev1.syms.toml"
@@ -68,29 +66,10 @@ data_reference_syms_files = [ "Zelda64RecompSyms/mm.us.rev1.datasyms.toml", "Zel
 # Additional files to include in the mod.
 additional_files = [ ]
 
-[[manifest.config_options]]
-id = "enum_option"
-name = "Enum Option"
-description = "Test enum config option"
-type = "Enum"
-options = [ "First", "Second" ]
-default = "First"
-
-[[manifest.config_options]]
-id = "number_option"
-name = "Number Option"
-description = "Test number config option."
-type = "Number"
-min = 0
-max = 10
-step = 0.1
-precision = 1
-percent = false
-default = 1
-
-[[manifest.config_options]]
-id = "string_option"
-name = "String Option"
-description = "Test string config option."
-type = "String"
-default = "Lorem Ipsum"
+# [[manifest.config_options]]
+# id = "enum_option"
+# name = "Enum Option"
+# description = "Test enum config option"
+# type = "Enum"
+# options = [ "First", "Second" ]
+# default = "First"
